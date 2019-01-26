@@ -1,0 +1,226 @@
+
+{% extends 'base.html' %}
+
+{% block title %} Home || {{ block.super }} {% endblock title %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <!-- Login  Message Framework -->
+        {% if messages %}
+             <div class="messages">
+                {% for message in messages %}
+                <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">X</span></button>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <!-- End Login Message Framework -->
+    </div>
+
+
+    <!-- Main Sections -->
+    <div class="container">
+        <div class="row">
+            <!-- Recent Lost Post person and item-->
+            {% for i in last_post %}
+                <div class="col-md-8 col-lg-8">
+                    <br/>
+                    <h2 style="text-align: center">{{ i.status }}</h2>
+                    <img class="img-fluid rounded" src="{{ i.image.url }}"alt="" style="width: 700px" ; height="300px;">
+                    <p class="lead">A little update on what's going on with Missing Information!</p>
+                    <div class="article">
+                        <ul class="meta-post">
+                            <li><i class="fa fa-calendar"></i><a href="#">{{ i.update | naturaltime }}</a></li>
+                            <li><i class="fa fa-user"></i><a href="#">{{ w.user }}</a></li>
+                            <li><i class="fa fa-comments"></i><a href="#">{{ w.comments.count }}</a></li>
+                        </ul>
+                        <a href="{% url 'lost' %}" class="pull-right"><strong>Continue reading </strong><i class="icon-angle-right"></i></a>
+                    </div>
+                </div>
+            {% endfor %}
+            <!-- End Recent Lost Post -->
+
+            <!-- Start Location -->
+            <div class="col-md-4 col-lg-4">
+                <div class="card my-4 border-info">
+                    <h5 class="card-header text-center">Location</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Left Side -->
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a href="#">Dhaka</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Chattogram</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Sylhet</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Khulna</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Right Side -->
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a href="#">Barishal</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Rajshahi</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Rangpur</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Mymensingh</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- End Right Side bar -->
+                        </div>
+                    </div>
+                </div>
+                <!-- End Location Section-->
+
+               <!-- Category Section -->
+                <div class="card my-4 border-primary">
+                    <h5 class="card-header text-center">Reward Post</h5>
+                    <div class="card-body">
+                        {% for r in my_reward %}
+                            <p><strong>{{ r.text }}<br></strong></p>
+                        {% endfor %}
+                    </div>
+                </div>
+               <!-- End Category -->
+
+                <!-- Total Post Count -->
+                <div class="card my-4 border-primary">
+                    <h5 class="card-header text-center">Social Media</h5>
+                    <div class="card-body">
+                        <span class="fa fa-facebook mr-2"> Facebook</span>
+                        <span class="fa fa-linkedin"> linkedin</span>
+                    </div>
+                </div>
+                <!--End Total Post Count -->
+
+            </div>
+        </div>
+    </div>
+    <!-- End Main Sections -->
+
+    <br>
+    <br>
+
+    <!-- Recent Lost Post -->
+    <h2 class="my-3">Recent Lost Post</h2>
+    <div class="container">
+        <div class="row">
+            <!-- Lost Person -->
+            {% for lp in lost_person %}
+                <div class="col-lg-4 col-xl-4">
+                    <div class="mb-4">
+                        <a href="{% url 'lost_person_details' lp.id %}">
+                            <img class="img-fluid" src="{{ lp.image.url }}" alt="Sample image">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6">
+                    <h3><strong>{{ lp.status }}</strong></h3>
+                    <h4><strong><pre>Name       : {{ lp.name }}</pre></strong></h4>
+                    <h4><strong><pre>Location   : {{ lp.location }}</pre></strong></h4>
+                    <h4><strong><pre>Updated    : {{ lp.update | naturaltime }}</pre></strong></h4>
+                    <h4><strong><pre>Created by : {{ lp.user.username }}</pre></strong></h4>
+                    <a href="{% url 'lost_person_details' lp.id %}" class="btn btn-success btn-md">Read more</a>
+                </div>
+            {% endfor %}
+            <!-- End Lost Person -->
+
+            <!-- Lost Item -->
+            {% for li in lost_item %}
+                <div class="col-lg-4 col-xl-4">
+                    <div class="mb-4">
+                        <a href="{% url 'lost_item_details' li.id %}">
+                            <img class="img-fluid" src="{{ li.image.url }}" alt="Sample image">
+                        </a>
+                    </div>
+                </div>
+                <!--detail section-->
+                <div class="col-lg-6 col-xl-6">
+                    <h3><strong>{{ li.status }}</strong></h3>
+                    <h4><strong><pre>Name       : {{ li.name }}</pre></strong></h4>
+                    <h4><strong><pre>Location   : {{ li.location }}</pre></strong></h4>
+                    <h4><strong><pre>Updated    : {{ li.update | naturaltime }}</pre></strong></h4>
+                    <h4><strong><pre>Created by : {{ li.user.username }}</pre></strong></h4>
+                    <a href="{% url 'lost_item_details' li.id %}" class="btn btn-primary btn-md">Read more</a>
+                </div>
+            {% endfor %}
+            <!-- End Lost item -->
+        </div>
+    </div>
+    <!-- End  Recent Lost Post Section -->
+
+
+    <br>
+    <!-- Recent Found Post -->
+    <h2 style="text-align: center">See Found Post</h2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-hover">
+              <thead class="thead-light">
+                <tr>
+                    <th width="35%">Status</th>
+                    <th width="25%">Name</th>
+                    <th width="25%">Location</th>
+                    <th width="45%">Update Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Recent Found Person Post -->
+                {% for rP in  recent_found_person %}
+                    <tr>
+                    <th>
+                        <a href="{% url 'found_person_details'  rP.id%}" target="_blank">{{ rP.status }}</a>
+                    </th>
+                      <td>{{ rP.name }}</td>
+                      <td>{{ rP.location }}</td>
+                      <td>{{ rP.update | naturaltime }}</td>
+                    </tr>
+                {% endfor %}
+                <!--End Recent Found Person Post -->
+
+
+                <!-- Recent Found Item Post -->
+                {% for rI in recent_found_item %}
+                    <tr>
+                        <th>
+                            <a href="{% url 'found_item_details'  rI.id%}" target="_blank">{{ rI.status }}</a>
+                        </th>
+                        <td>{{ rI.name }}</td>
+                        <td>{{ rI.location }}</td>
+                        <td>{{ rI.update | naturaltime }}</td>
+                    </tr>
+                {% endfor %}
+              <!-- End Recent Found Item Post -->
+              </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+    <!-- End Recent Found Post -->
+
+{% endblock content %}
+

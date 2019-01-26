@@ -1,0 +1,27 @@
+
+{% extends 'base.html' %}
+
+{% block title %} Person Delete || {{ block.super }} {% endblock %}
+
+{% block stylesheet %} {% endblock %}
+
+
+{% block content %}
+
+    <div class="offset-md-3 col-md-6 my-5">
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <h2 style="text-align: center">Are you sure you want to delete {{ lp_delete }}" ? </h2>
+            <input type="submit" class="btn btn-danger" value="Yes" />
+            <input type="submit" class="btn btn-info" value="No" />
+        </form>
+        <div style="margin-bottom: 180px"></div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block script %} {% endblock %}
+

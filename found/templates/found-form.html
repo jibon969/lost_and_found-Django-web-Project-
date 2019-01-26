@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} Found Create Form || {{ block.super }} {% endblock %}
+
+{% block stylesheet %} {% endblock %}
+
+
+{% block content %}
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="row">
+            <div class="offset-1 col-md-10">
+                <br>
+                <br>
+                <h3 class="panel-title" style="text-align: center">Create Found Post Here</h3>
+                <form action="" method="POST" novalidate enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <button class="btn btn-success">submit</button>
+                    <div style="margin-bottom: 20px"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End Main Container -->
+
+{% endblock %}
+
+
+{% block script %} {% endblock %}

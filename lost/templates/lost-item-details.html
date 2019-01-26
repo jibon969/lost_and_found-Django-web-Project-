@@ -1,0 +1,373 @@
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block title %} Lost Item Details || {{ block.super }} {% endblock %}
+
+{% block stylesheet %}
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="offset-md-1 col-lg-10">
+                <h1 style="text-align: center">Lost Item Details</h1>
+                <img class="img-fluid rounded" src="{{ l_item.image.url }}" alt="">
+                <br>
+                <br>
+                <!-- Post Content -->
+                <h4><strong><pre>Status       : {{ l_item.status }}</pre></strong></h4>
+                <h4><strong><pre>Item Name    : {{ l_item.name }} </pre></strong></h4>
+                <h4><strong><pre>Location     : {{ l_item.location }}</pre></strong></h4>
+                <h4><strong><pre>Contact info : {{ l_item.phone_number }}</pre></strong></h4>
+                <h4><strong><pre>Create by    : {{ l_item.user }}</pre></strong></h4>
+
+                <!-- End Found Item Post Details -->
+
+                <!-- Update and Delete Post Section -->
+                 {% if l_item.user == user %}
+                    <a class="btn btn-success" href="{% url 'lost_item_update' id=l_item.id   %}">Update</a>
+                    <a class="btn btn-danger" href="{% url 'lost_item_delete' id=l_item.id  %}">Delete</a>
+                {% endif %}
+                <!-- End Contact Information -->
+
+
+
+             <!-- Comment And Replay Post -->
+
+                <!-- First Comment Form -->
+                <div class="card my-4">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form  action="" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea name="message"  class="form-control" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- End First Comment Form -->
+
+                <!-- Show All Commend Post -->
+                {% for comment in l_item.comments.all %}
+                    <div class="media mt-4">
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <h5>{{ comment.created_by }} {{ comment.id }}</h5>
+                            <p>{{ comment.message }}</p>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success mb-2">Replay</button>
+                    <!-- Replay Comment Form -->
+                        <form action="" method="POST" class="mr-3">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea name="message" class="form-control" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    <!-- End Replay Comment Form -->
+                {% endfor %}
+                <!-- End All Comment Show Form -->
+
+
+                <!-- Show Replay Comment -->
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        {% for reply in comment.reply.all %}
+                            <div class="media mt-4">
+                                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                                <div class="media-body">
+                                    <h5 class="mt-0">{{ reply.created_by }}</h5>
+                                    {{ reply.message }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- End Comment And Replay Post -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Post Here -->
+    <div class="container">
+        <h3 class="card-header">Related Found Post</h3>
+        <br/>
+        <div class="row">
+            {% for r in related_found_person %}
+                <div class="col-md-3">
+                    <figure class="animate-box">
+                        <a href="{% url 'found_person_details' r.id %}">
+                            <img src="{{ r.image.url }}" style="width: 180px; height: 150px" alt="Uh oh image not found" class="img-responsive"/>
+                        </a>
+                        <br>
+                        <a href="{% url 'found_person_details' r.id %}">
+                            <h4 class="fh5co-article-title animate-box">{{ r.name }}</h4>
+                        </a>
+                        <p>{{ r.location }}</p>
+                    </figure>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+ <!--End Related Post section-->
+
+
+{% endblock %}
+
+
+{% block script %} {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{##}
+{#{% extends 'master.html' %}#}
+{##}
+{#{% load static %}#}
+{##}
+{#{% load humanize %}#}
+{##}
+{#{% block title %} Found Item Detail || {{ block.super }} {% endblock %}#}
+{##}
+{#{% block stylesheet %}#}
+{##}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block content %}#}
+{##}
+{# <!--Single Post Section-->#}
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            <div class="offset-md-1 col-lg-10">#}
+{#                <h1 style="text-align: center">Found Item Details</h1>#}
+{#                <img class="img-fluid rounded" src="{{ f_item.image.url }}" alt="Uh oh image Not Found" style="width: 850px; height: 500px;">#}
+{#                <br>#}
+{#                <br>#}
+{#                <h4><strong><pre>Status       : {{ f_item.status }}</pre></strong></h4>#}
+{#                <h4><strong><pre>Item Name    : {{ f_item.name }} </pre></strong></h4>#}
+{#                <h4><strong><pre>Location     : {{ f_item.location }}</pre></strong></h4>#}
+{#                <h4><strong><pre>Contact info : {{ f_item.phone_number }}</pre></strong></h4>#}
+{#                <h4><strong><pre>Create by    : {{ f_item.user }}</pre></strong></h4>#}
+{##}
+{#                <!-- End Found Item Post Details -->#}
+{##}
+{#                <!-- Delete Post Section -->#}
+{#                <a class="btn btn-success" href="{% url 'found_item_update' id=f_item.id   %}">Update</a>#}
+{#                <a class="btn btn-danger" href="{% url 'found_item_delete' id=f_item.id  %}">Delete</a>#}
+{##}
+{##}
+{#                <!-- Comments Form -->#}
+{#                <div class="card my-4">#}
+{#                    <h5 class="card-header">Leave a Comment:</h5>#}
+{#                    <div class="card-body">#}
+{#                        <form action="" method="POST">#}
+{#                            {% csrf_token %}#}
+{#                            <div class="form-group">#}
+{#                                <textarea class="form-control" rows="3"></textarea>#}
+{#                            </div>#}
+{#                            <button type="submit" class="btn btn-primary">Submit</button>#}
+{#                        </form>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#                <!-- Single Comment -->#}
+{#                <div class="media mb-4">#}
+{#                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#                    <div class="media-body">#}
+{#                        <h5 class="mt-0">Commenter Name</h5>#}
+{#                        Cras sit amet nibh libero, in gravida nulla.#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#                <!-- Comment with nested comments -->#}
+{#                <div class="media mb-4">#}
+{#                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#                    <div class="media-body">#}
+{#                        <h5 class="mt-0">Commenter Name</h5>#}
+{#                        Cras sit amet nibh libero, in gravida nulla.#}
+{##}
+{#                        <div class="media mt-4">#}
+{#                            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#                            <div class="media-body">#}
+{#                                <h5 class="mt-0">Commenter Name</h5>#}
+{#                                Cras sit amet nibh libero, in gravida nulla.#}
+{#                            </div>#}
+{#                        </div>#}
+{##}
+{#                        <div class="media mt-4">#}
+{#                            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#                            <div class="media-body">#}
+{#                                <h5 class="mt-0">Commenter Name</h5>#}
+{#                                Cras sit amet nibh libero, in gravida nulla#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        <!-- Related Found Post -->#}
+{#            <div class="container">#}
+{#                <h3 class="card-header">Related Found Item Post</h3>#}
+{#                <br />#}
+{#                <div class="row">#}
+{#                    {% for i in related_found_item %}#}
+{#                        <div class="col-md-3">#}
+{#                            <figure class="animate-box">#}
+{#                                <a href="">#}
+{#                                    <img src="{{ i.image.url }}" style="width: 180px; height: 150px" alt="Uh oh image not found" class="img-responsive"/>#}
+{#                                </a>#}
+{#                                <br>#}
+{#                                <a href="">#}
+{#                                    <h4 class="fh5co-article-title animate-box">{{ i.name }}</h4>#}
+{#                                </a>#}
+{#                                <p>{{ i.location }}</p>#}
+{#                            </figure>#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#            <!-- End Related Post -->#}
+{#        </div>#}
+{#    </div>#}
+{#    <!--End Header top section-->#}
+{##}
+{##}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block script %} {% endblock %}#}
+
+
+
+{##}
+{#{% extends 'master.html' %}#}
+{##}
+{#{% load static %}#}
+{##}
+{#{% load humanize %}#}
+{##}
+{#{% block title %} Lost Item Detail || {{ block.super }} {% endblock %}#}
+{##}
+{#{% block stylesheet %}#}
+{##}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block content %}#}
+{##}
+{# <!--Single Post Section-->#}
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            <div class="offset-md-1 col-lg-10">#}
+{#                <h1 style="text-align: center">Lost Item Details</h1>#}
+{#                <img class="img-fluid rounded" src="{{ l_item.image.url }}" alt="">#}
+{#                <br>#}
+{#                <br>#}
+{#                <!-- Post Content -->#}
+{#                <p><strong>Status : {{ l_item.status }}</strong></p>#}
+{#                <p><strong>Name : {{ l_item.name }}</strong></p>#}
+{#                <p><strong>Location : {{ l_item.location }} </strong></p>#}
+{#                <p><strong>phone_number : {{ l_item.phone_number }} </strong></p>#}
+{#                <p><strong>Create by : {{ l_item.user }} </strong></p>#}
+{#                <!-- Delete Post Section -->#}
+{##}
+{##}
+{##}
+{#                <!-- Comments Form -->#}
+{#                <div class="card my-4">#}
+{#                    <h5 class="card-header">Leave a Comment:</h5>#}
+{#                    <div class="card-body">#}
+{#                        <form action="" method="POST">#}
+{#                            {% csrf_token %}#}
+{#                            <div class="form-group">#}
+{#                                <textarea class="form-control" rows="3"></textarea>#}
+{#                            </div>#}
+{#                            <button type="submit" class="btn btn-primary">Submit</button>#}
+{#                        </form>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#                <!-- Single Comment -->#}
+{#                <div class="media mb-4">#}
+{#                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#                    <div class="media-body">#}
+{#                        <h5 class="mt-0">Commenter Name</h5>#}
+{#                        Cras sit amet nibh libero, in gravida nulla.#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#                <!-- Comment with nested comments -->#}
+{#                <div class="media mb-4">#}
+{#                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#                    <div class="media-body">#}
+{#                        <h5 class="mt-0">Commenter Name</h5>#}
+{#                        Cras sit amet nibh libero, in gravida nulla.#}
+{##}
+{#                        <div class="media mt-4">#}
+{#                            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#                            <div class="media-body">#}
+{#                                <h5 class="mt-0">Commenter Name</h5>#}
+{#                                Cras sit amet nibh libero, in gravida nulla.#}
+{#                            </div>#}
+{#                        </div>#}
+{##}
+{#                        <div class="media mt-4">#}
+{#                            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#                            <div class="media-body">#}
+{#                                <h5 class="mt-0">Commenter Name</h5>#}
+{#                                Cras sit amet nibh libero, in gravida nulla#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <div class="container">#}
+{#                <h3 class="card-header">Related Found Item Post</h3>#}
+{#                <br />#}
+{#                <div class="row">#}
+{#                    <div class="col-md-3">#}
+{#                        <figure class="animate-box">#}
+{#                            <a href="">#}
+{#                                <img src="" style="width: 180px; height: 150px" alt="Uh oh image not found" class="img-responsive"/>#}
+{#                            </a>#}
+{#                            <br>#}
+{#                            <a href="">#}
+{#                                <h4 class="fh5co-article-title animate-box">title</h4>#}
+{#                            </a>#}
+{#                            <p>contain</p>#}
+{#                        </figure>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    <!--End Header top section-->#}
+{##}
+{##}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block script %} {% endblock %}#}

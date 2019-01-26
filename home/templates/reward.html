@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Reward || {{ block.super }} {% endblock %}
+
+{% block stylesheet %} {% endblock %}
+
+
+{% block content %}
+
+    <div class="offset-md-3 col-md-6 my-5">
+        <h3 class="" style="text-align: center">Reward Post</h3>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleReword">Reward</label>
+                <input type="text" name="text" class="form-control" placeholder="Reward"/>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+            <div style="margin-bottom: 150px"></div>
+        </form>
+        </div>
+
+{% endblock %}
+
+
+{% block script %} {% endblock %}

@@ -1,0 +1,134 @@
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% load humanize %}
+
+{% block title %} Found Person Detail || {{ block.super }} {% endblock %}
+
+{% block stylesheet %} {% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="offset-md-1 col-lg-10">
+                <h1 style="text-align: center">Found Person Details</h1>
+                <img class="img-fluid rounded" src="{{ fp_detail.image.url }}" alt="">
+                <br>
+                <br>
+                <!-- Post Content -->
+                <h4><strong><pre>Status       : {{ fp_detail.status }}</pre></strong></h4>
+                <h4><strong><pre>Person Name  : {{ fp_detail.name }}</pre></strong></h4>
+                <h4><strong><pre>Father Name  : {{ fp_detail.father_name }}</pre></strong></h4>
+                <h4><strong><pre>Mother Name  : {{ fp_detail.mother_name }}</pre></strong></h4>
+                <h4><strong><pre>Age          : {{ fp_detail.age }}</pre></strong></h4>
+                <h4><strong><pre>Body Color   : {{ fp_detail.body_color }}</pre></strong></h4>
+                <h4><strong><pre>Height       : {{ fp_detail.height }}</pre></strong></h4>
+                <h4><strong><pre>Location     : {{ fp_detail.location }}</pre></strong></h4>
+                <h4><strong><pre>Contact info : {{ fp_detail.phone_number }}</pre></strong></h4>
+                <h4><strong><pre>Create by    : {{ fp_detail.user }}</pre></strong></h4>
+                <!-- End Contact Information -->
+
+
+                <!-- Update and Delete button -->
+                {% if fp_detail.user == user %}
+                    <a class="btn btn-success" href="{% url 'found_person_update' id=fp_detail.id   %}">Update</a>
+                    <a class="btn btn-danger" href="{% url 'found_person_delete' id=fp_detail.id  %}">Delete</a>
+                {% endif %}
+                <!-- End Update and Delete button -->
+
+
+             <!-- Comment And Replay Post -->
+
+                <!-- First Comment Form -->
+                <div class="card my-4">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form  action="" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea name="message"  class="form-control" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- End First Comment Form -->
+
+                <!-- Show All Commend Post -->
+                {% for comment in fp_detail.comments.all %}
+                    <div class="media mt-4">
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <h5>{{ comment.created_by }} {{ comment.id }}</h5>
+                            <p>{{ comment.message }}</p>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success mb-2">Replay</button>
+                    <!-- Replay Comment Form -->
+                        <form action="" method="POST" class="mr-3">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea name="message" class="form-control" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    <!-- End Replay Comment Form -->
+                {% endfor %}
+                <!-- End All Comment Show Form -->
+
+
+                <!-- Show Replay Comment -->
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        {% for reply in comment.reply.all %}
+                            <div class="media mt-4">
+                                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                                <div class="media-body">
+                                    <h5 class="mt-0">{{ reply.created_by }}</h5>
+                                    {{ reply.message }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- End Comment And Replay Post -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Post Here -->
+    <div class="container">
+        <h3 class="card-header">Related Found Post</h3>
+        <br/>
+        <div class="row">
+            {% for r in related_found_person %}
+                <div class="col-md-3">
+                    <figure class="animate-box">
+                        <a href="{% url 'found_person_details' r.id %}">
+                            <img src="{{ r.image.url }}" style="width: 180px; height: 150px" alt="Uh oh image not found" class="img-responsive"/>
+                        </a>
+                        <br>
+                        <a href="{% url 'found_person_details' r.id %}">
+                            <h4 class="fh5co-article-title animate-box">{{ r.name }}</h4>
+                        </a>
+                        <p>{{ r.location }}</p>
+                    </figure>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+ <!--End Related Post section-->
+
+
+{% endblock %}
+
+
+{% block script %} {% endblock %}

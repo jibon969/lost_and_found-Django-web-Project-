@@ -1,0 +1,249 @@
+
+{% load static %}
+
+{% load humanize %}
+
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cropper.min.css' %}">
+
+    {% block stylesheet %}{% endblock stylesheet %}
+
+    <title>{% block title %} Lost & Found {% endblock title %}</title>
+
+</head>
+
+<body>
+    <section class="#">
+        <nav class="navbar bg-dark navbar-dark navbar-expand-md">
+            <div class="container">
+                <!-- Java Scripts Moving Code -->
+                <a href="" class="navbar-brand ml5">
+                    <span class="text-wrapper">
+                        <span class="letters letters-left">Lost</span>
+                        <span class="letters ampersand">&amp;</span>
+                        <span class="letters letters-right">Found</span>
+                    </span>
+                </a>
+                <!-- End Moving Java Scripts Code -->
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="{% url 'index' %}" class="nav-link active">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'found' %}" class="nav-link">Found</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'lost' %}" class="nav-link">Lost</a>
+                        </li>
+
+                        {% if request.user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Create Post
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu" style="background-color: #343a40;">
+                                    <a class="dropdown-item" href="{% url 'create_found_person' %}">Found Person</a>
+                                    <a class="dropdown-item" href="{% url 'create_found_item' %}">Found Item</a>
+                                    <a class="dropdown-item" href="{% url 'create_lost_person' %}">Lost Person</a>
+                                    <a class="dropdown-item" href="{% url 'create_lost_item' %}">Lost Item</a>
+                                </div>
+                             </li>
+                        {% endif %}
+
+                        {% if not request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a href="{% url 'signup' %}" class="nav-link">Signup</a>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a href="{% url 'login' %}" class="nav-link">Login</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ user.username }}
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu" style="background-color: #343a40;">
+                                    <a class="dropdown-item" href="#">{{ user.last_name }}</a>
+                                    <div class="dropdown-divider"></div>
+                                    {% if request.user.is_superuser %}
+                                        <a class="dropdown-item" href="{% url 'reward' %}">Reward</a>
+                                    {% endif %}
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+                                </div>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </section>
+    <!--End Navigation Bar-->
+
+
+    <!-- Main Contain -->
+    <div class="container">
+        <div class="row">
+            {% block content %}
+
+
+
+            {% endblock content %}
+        </div>
+    </div>
+    <!-- End Contain -->
+
+    <div style="margin-bottom: 10px;"></div>
+
+
+    <!--Footer Section-->
+	<footer>
+        <div class="col-ms-12">
+            <!-- Start top bar -->
+            <div class="top-bar">
+                <div class="social">
+                    <ul class="social-share">
+                        <li>
+                            <a href="https://www.facebook.com/jibon969/">
+                                <span class="fa fa-facebook"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/in/jibon969/">
+                                <span class="fa fa-linkedin"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/jibon969">
+                                <span class="fa fa-twitter"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/jibon969/">
+                                <span class="fa fa-github"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+         <!-- End top Bar -->
+
+        <!-- Footer bottom -->
+        <div id="footer" class="midnight-blue">
+            <div class="container">
+                <div class="row">
+                    <!-- Footer left Side -->
+                    <!-- Footer left Side -->
+                    <div class="col-md-6">
+                        <ul class="footer-menu">
+                            <li>
+                                <a href="https://www.facebook.com/jibon969/">
+                                    <span class="fa fa-university"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">Daffodil International University</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Footer left Side -->
+                    <!-- Footer left Side -->
+
+                    <!-- Footer Right Side -->
+                    <div class="col-md-6 text-right copyright">
+                        Copyright &copy; Lost & Found. All Rights Reserved.
+                        <div class="credits">
+                            <a href="#">Design &amp; Development</a> by</a>
+                            <a href="https://github.com/jibon969/" target="blank">Jibon ahmed</a>
+                        </div>
+                    </div>
+                    <!-- End Footer Right Side -->
+                </div>
+            </div>
+        </div>
+	</footer>
+	<!----- End Footer -->
+
+
+
+    <!-- Java Scripts Library -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script>
+        new WOW().init();
+    </script>
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <script src="{% static 'js/anime.min.js' %}"></script>
+    <script src="{% static 'js/cropper.min.js' %}"></script>
+
+    {% block scripts %}
+    <!-- Moving Java Scripts Code -->
+    <script >
+        anime.timeline({loop: true})
+          .add({
+            targets: '.ml5 .line',
+            opacity: [0.5,1],
+            scaleX: [0, 1],
+            easing: "easeInOutExpo",
+            duration: 700
+          }).add({
+            targets: '.ml5 .line',
+            duration: 600,
+            easing: "easeOutExpo",
+            translateY: function(e, i, l) {
+              var offset = -0.625 + 0.625*2*i;
+              return offset + "em";
+            }
+          }).add({
+            targets: '.ml5 .ampersand',
+            opacity: [0,1],
+            scaleY: [0.5, 1],
+            easing: "easeOutExpo",
+            duration: 600,
+            offset: '-=600'
+          }).add({
+            targets: '.ml5 .letters-left',
+            opacity: [0,1],
+            translateX: ["0.5em", 0],
+            easing: "easeOutExpo",
+            duration: 600,
+            offset: '-=300'
+          }).add({
+            targets: '.ml5 .letters-right',
+            opacity: [0,1],
+            translateX: ["-0.5em", 0],
+            easing: "easeOutExpo",
+            duration: 600,
+            offset: '-=600'
+          }).add({
+            targets: '.ml5',
+            opacity: 0,
+            duration: 1000,
+            easing: "easeOutExpo",
+            delay: 1000
+          });
+    </script>
+   {% endblock scripts %}
+    <!-- End Moving Java Scripts Code -->
+
+</body>
+</html>

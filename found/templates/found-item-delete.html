@@ -1,0 +1,47 @@
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} Item Delete || {{ block.super }} {% endblock %}
+
+{% block stylesheet %} {% endblock %}
+
+
+{% block content %}
+
+         <!-- Message Framework -->
+        <div class="container-fluid">
+            {% if messages %}
+                 <div class="messages">
+                    {% for message in messages %}
+                    <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">X</span></button>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <!-- End Message Framework -->
+
+    <div class="offset-md-3 col-md-6 my-5">
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <h2 style="text-align: center">Are you sure you want to delete {{ fi_delete }}" ? </h2>
+            <input type="submit" class="btn btn-danger" value="Yes" />
+            <input type="submit" class="btn btn-info" value="No" />
+        </form>
+        <div style="margin-bottom: 180px"></div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block script %} {% endblock %}
+

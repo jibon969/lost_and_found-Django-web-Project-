@@ -1,0 +1,80 @@
+
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block title %} Comment || {{ block.super }} {% endblock %}
+
+{% block stylesheet %}
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="offset-md-1 col-lg-10">
+        <h2 class="text-center"> Details Page </h2>
+        <img class="img-thumbnail my-4" src="{% static 'img/image1.jpg' %}" alt="" style="width: 700px; height: 450px">
+        <!-- Item information -->
+        <h3><pre><strong>Status : I Lost My Mouse</strong></pre></h3>
+        <h3><pre><strong>Status : I Lost My Mouse</strong></pre></h3>
+        <h3><pre><strong>Status : I Lost My Mouse</strong></pre></h3>
+        <h3><pre><strong>Status : I Lost My Mouse</strong></pre></h3>
+        <h3><pre><strong>Status : I Lost My Mouse</strong></pre></h3>
+        <h3><pre><strong>Status : I Lost My Mouse</strong></pre></h3>
+
+        <!-- Comment Form -->
+        <div class="card my-4">
+            <h5 class="card-header">Leave a Comment:</h5>
+            <div class="card-body">
+                <form action="" method="POST" novalidate enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-success">submit</button>
+                    <div style="margin-bottom: 20px"></div>
+                </form>
+            </div>
+        </div>
+        <!-- End Comment form -->
+
+        <!-- Show Comment Here -->
+        <div class="media mb-4">
+            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+            <div class="media-body">
+                {% for p in p_comment %}
+                    <h2 class="my-4">{{ p.message }}</h2>
+                {% endfor %}
+
+                <a href="" class="btn btn-primary" style="margin-right: 40px">Replay</a>
+            </div>
+        </div>
+        <!-- End Show Comment -->
+
+        <!-- Show Replay Comment -->
+        <div class="media mb-4">
+            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+            <div class="media-body">
+                <div class="media mt-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                       {% for r in p_replay_comment %}
+                             <h3>{{ r.message }}</h3>
+                       {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End replay Comment -->
+    </div>
+    <!--End Header top section-->
+
+
+{% endblock %}
+
+
+{% block script %} {% endblock %}

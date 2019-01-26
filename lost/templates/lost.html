@@ -1,0 +1,82 @@
+
+{% extends 'master.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block title %} Lost Post || {{ block.super }} {% endblock title %}
+
+
+{% block  content %}
+
+    <!-- Message Framework -->
+    <div class="container-fluid my-4">
+        {% if messages %}
+             <div class="messages">
+                {% for message in messages %}
+                <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">X</span></button>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <!-- End Message Framework -->
+
+
+    <div class="container-fluid">
+        <h4 style="text-align: center">All Lost Post Here</h4>
+    </div>
+    <br>
+    <br>
+
+    <!-- Lost Person Section -->
+    {% for lp in lost_person %}
+        <div class="col-lg-4 col-md-6">
+            <div class="view overlay rounded mb-3 img-thumbnail">
+                <a href="{% url 'lost_person_details' lp.id %}" target="blank">
+                    <img class="img-fluid" src="{{ lp.image.url }}" alt="Uh oh image not Found !" style="max-width: 100%;"/>
+                </a>
+            </div>
+            <p><strong>Status: {{ lp.status }}</strong></p>
+            <p><strong>Name : {{ lp.name }} </strong></p>
+            <p><strong>Location : {{ lp.location }} </strong></p>
+            <p><strong>Updated Time : {{ lp.update | naturaltime }}</strong></p>
+            <a class="btn btn-info btn-rounded btn-block mb-4" href="{% url 'lost_person_details' lp.id %}" target="blank">Details</a>
+        </div>
+
+        <!-- Search Result for person -->
+        {% empty %}
+
+            <div style="margin-bottom: 85px"></div>
+            <div class="container mb-5">
+                <h2 style="text-align: center"><strong>Your expected result is not found !</strong></h2>
+            </div>
+            <div style="margin-bottom: 250px"></div>
+            <!-- End Result for person -->
+    {% endfor %}
+    <!-- End Lost  Section -->
+    
+    
+     <!-- Lost item Section -->
+    {% for lI in lost_item %}
+        <div class="col-lg-4 col-md-6">
+            <div class="view overlay rounded mb-3 img-thumbnail">
+                <a href="{% url 'lost_item_details' lI.id %}" target="blank">
+                    <img class="img-fluid" src="{{ lI.image.url }}" alt="Uh oh image not Found !" style="max-width: 100%;"/>
+                </a>
+            </div>
+            <p><strong>Status: {{ lI.status }}</strong></p>
+            <p><strong>Name : {{ lI.name }} </strong></p>
+            <p><strong>Location : {{ lI.location }}</strong></p>
+            <p><strong>Updated Time : {{ lI.update | naturaltime }} </strong></p>
+            <a class="btn btn-info btn-rounded btn-block mb-4" href="{% url 'lost_item_details' lI.id %}" target="blank">Details</a>
+        </div>
+    <!-- End Lost Section -->
+    {% endfor %}
+
+{% endblock content %}
+
+
+

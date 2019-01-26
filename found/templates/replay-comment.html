@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Replay Comment || {{ block.super }} {% endblock %}
+
+{% block stylesheet %} {% endblock %}
+
+
+{% block content %}
+
+    <div class="offset-md-3 col-md-6 my-5">
+        <h3 class="" style="text-align: center">Replay Comment</h3>
+        <br>
+        <div class="card my-4">
+			<div class="card-body">
+				<form  action="" method="POST">
+					{% csrf_token %}
+					<div class="form-group">
+						<textarea name="message" class="form-control" rows="3"></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+		</div>
+    </div>
+
+{% endblock %}
+
+
+{% block script %} {% endblock %}
